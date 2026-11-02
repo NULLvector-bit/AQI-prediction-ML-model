@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.impute import SimpleImputer
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error
 
@@ -21,8 +20,7 @@ pollutants = [
 ]
 X = data[pollutants].copy()
 y = data["AQI"].copy()
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.20, random_state=67)
-model = XGBRegressor(
+final_model = XGBRegressor(
     n_estimators=300,
     max_depth=9,
     learning_rate=0.05,
@@ -32,11 +30,11 @@ model = XGBRegressor(
     random_state=67,
     n_jobs=-1,
 )
-model.fit(X_train, y_train)
-y_pred = model.predict(X_val)
-rmse = np.sqrt(mean_squared_error(y_val, y_pred))
-print("RMSE:", rmse)
-train_pred = model.predict(X_train)
-train_rmse = np.sqrt(mean_squared_error(y_train, train_pred))
-print("Training RMSE:", train_rmse)
-print("Validation RMSE:", rmse)
+
+final_model.fit(X, y)
+test_data = pd.read_csv("test.csv")
+X_submission = test_data[pollutants].copy()
+predicted_aqi = final_model.predict(X_submission)
+submission = pd.read_csv("sample_submission.csv")
+submission["AQI"] = predicted_aqi
+submission.to_csv("submission.csv", index=False)
