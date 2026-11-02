@@ -20,9 +20,11 @@ pollutants = [
 ]
 X = data[pollutants].copy()
 y = data["AQI"].copy()
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.15, random_state=67)
+
 final_model = XGBRegressor(
     n_estimators=300,
-    max_depth=9,
+    max_depth=5,
     learning_rate=0.05,
     min_child_weight=5,
     subsample=0.8,
