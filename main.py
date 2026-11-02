@@ -27,8 +27,10 @@ X_train_imputed = imputer.fit_transform(X_train)
 X_val_imputed = imputer.transform(X_val)
 model = XGBRegressor(
     n_estimators=300,
-    max_depth=6,
+    max_depth=9,
     learning_rate=0.05,
+    min_child_weight=5,
+    subsample=0.8,
     objective="reg:squarederror",
     random_state=67,
     n_jobs=-1,
@@ -37,3 +39,7 @@ model.fit(X_train_imputed, y_train)
 y_pred = model.predict(X_val_imputed)
 rmse = np.sqrt(mean_squared_error(y_val, y_pred))
 print("RMSE:", rmse)
+train_pred = model.predict(X_train_imputed)
+train_rmse = np.sqrt(mean_squared_error(y_train, train_pred))
+print("Training RMSE:", train_rmse)
+print("Validation RMSE:", rmse)
