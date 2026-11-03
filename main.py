@@ -40,10 +40,10 @@ y = data["AQI"]
 X_submission = make_features(test_data)
 X_submission = X_submission.reindex(columns=X.columns, fill_value=0)
 final_model = XGBRegressor(
-    n_estimators=300,
+    n_estimators=500,
     max_depth=5,
     learning_rate=0.05,
-    min_child_weight=5,
+    min_child_weight=6,
     subsample=0.8,
     objective="reg:squarederror",
     random_state=67,
