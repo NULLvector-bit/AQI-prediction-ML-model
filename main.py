@@ -1,7 +1,6 @@
 import pandas as pd
 from xgboost import XGBRegressor
 
-# 1. Load datasets
 data = pd.read_csv("train.csv")
 test_data = pd.read_csv("test.csv")
 pollutants = [
