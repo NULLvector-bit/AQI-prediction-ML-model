@@ -5,7 +5,7 @@ import pandas as pd
 
 from sklearn.model_selection import GroupKFold
 
-from config import VALIDATION_MODE, XGB_WEIGHT, LGB_WEIGHT, POLLUTANTS
+from config import VALIDATION_MODE, XGB_WEIGHT, LGB_WEIGHT, pollutants
 
 from models import model_inputs, xgb, lgb
 
@@ -29,7 +29,7 @@ def main():
     print("Training features:", x_train.shape, l_train.shape, flush=True)
 
     if VALIDATION_MODE:
-        complete = train[POLLUTANTS].notna().all(axis=1).to_numpy()
+        complete = train[pollutants].notna().all(axis=1).to_numpy()
         fold_scores, sum_squared, n_rows = [], 0.0, 0
         for fold, (train_idx, val_idx) in enumerate(
             GroupKFold(n_splits=5).split(x_train, y, groups=train["City"]), start=1

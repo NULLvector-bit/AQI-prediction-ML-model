@@ -5,7 +5,6 @@ from config import AQI_BREAKPOINTS
 
 
 def clock_and_physics(df):
-    """Only the 30 clock features and 10 regulatory proxies used by the model."""
     timestamp = pd.to_datetime(df["Date"], format="%m/%d/%Y", errors="raise")
     timestamp += pd.to_timedelta(
         pd.to_datetime(df["Time"], format="%I:%M %p", errors="raise").dt.hour, unit="h"

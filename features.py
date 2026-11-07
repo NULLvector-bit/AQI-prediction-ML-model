@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 
-from config import POLLUTANTS
+from config import pollutants
 
 
 def make_features(df, extended):
     """Core pollutant and observation-based history features."""
-    features = df[POLLUTANTS].copy()
+    features = df[pollutants].copy()
     features["hour"] = pd.to_datetime(
         df["Time"], format="%I:%M %p", errors="coerce"
     ).dt.hour
