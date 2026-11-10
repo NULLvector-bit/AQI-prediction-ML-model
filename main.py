@@ -5,7 +5,13 @@ import pandas as pd
 
 from sklearn.model_selection import GroupKFold
 
-from config import VALIDATION_MODE, XGB_WEIGHT, LGB_WEIGHT, pollutants
+from config import (
+    VALIDATION_MODE,
+    XGB_WEIGHT,
+    LGB_WEIGHT,
+    COMPLETE_ROW_WEIGHT,
+    pollutants,
+)
 
 from models import model_inputs, xgb, lgb
 
@@ -15,7 +21,9 @@ def main():
     train = pd.read_csv(root / "train.csv")
     test = pd.read_csv(root / "test.csv")
     y = train["AQI"]
-    sample_weights = np.where(train[pollutants].notna().all(axis=1), 3.0, 1.0)
+    sample_weights = np.where(
+        train[pollutants].notna().all(axis=1), COMPLETE_ROW_WEIGHT, 1.0
+    )
     x_train, l_train = model_inputs(train)
     x_test, l_test = model_inputs(test)
     x_test = x_test.reindex(columns=x_train.columns, fill_value=0)
