@@ -15,7 +15,7 @@ def main():
     train = pd.read_csv(root / "train.csv")
     test = pd.read_csv(root / "test.csv")
     y = train["AQI"]
-
+    sample_weights = np.where(train[pollutants].notna().all(axis=1), 3.0, 1.0)
     x_train, l_train = model_inputs(train)
     x_test, l_test = model_inputs(test)
     x_test = x_test.reindex(columns=x_train.columns, fill_value=0)
@@ -36,7 +36,12 @@ def main():
         ):
             val_idx = val_idx[complete[val_idx]]
             xgb.fit(x_train.iloc[train_idx], y.iloc[train_idx])
-            lgb.fit(l_train.iloc[train_idx], y.iloc[train_idx])
+            lgb.fit(
+                l_train.iloc[train_idx],
+                y.iloc[train_idx],
+                sample_weight=sample_weights[train_idx],
+            )
+
             pred = XGB_WEIGHT * xgb.predict(
                 x_train.iloc[val_idx]
             ) + LGB_WEIGHT * lgb.predict(l_train.iloc[val_idx])
@@ -50,7 +55,7 @@ def main():
         print(f"Pooled RMSE: {np.sqrt(sum_squared / n_rows):.5f}")
     else:
         xgb.fit(x_train, y)
-        lgb.fit(l_train, y)
+        lgb.fit(l_train, y, sample_weight=sample_weights)
         predictions = XGB_WEIGHT * xgb.predict(x_test) + LGB_WEIGHT * lgb.predict(
             l_test
         )
