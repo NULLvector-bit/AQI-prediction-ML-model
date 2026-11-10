@@ -1,7 +1,7 @@
 VALIDATION_MODE = False
 
-XGB_WEIGHT = 0.40
-LGB_WEIGHT = 0.60
+XGB_WEIGHT = 0.10
+LGB_WEIGHT = 0.90
 
 pollutants = [
     "PM2.5",
