@@ -27,6 +27,7 @@ xgb = XGBRegressor(
     random_state=67,
     n_jobs=-1,
     tree_method="hist",
+    device="cuda",
 )
 lgb = LGBMRegressor(
     n_estimators=500,
@@ -38,6 +39,7 @@ lgb = LGBMRegressor(
     subsample_freq=1,
     colsample_bytree=0.9,
     reg_lambda=2,
+    device_type="gpu",
     random_state=67,
     n_jobs=-1,
     verbosity=-1,
