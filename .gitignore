@@ -34,7 +34,13 @@ venv/
 ENV/
 env/
 ENV*/
-
+# Credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+kaggle.json
 # Inline pipx environments
 .pipx_bin/
 
